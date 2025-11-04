@@ -10,7 +10,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
         crossorigin="anonymous"
     >
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='main.js') }}"></script>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
@@ -26,6 +26,15 @@
           <button type="submit" class="btn btn-primary" id="submit-button">Upload</button>
         </div>
         <div class="mt-3" id="submit-result">hello World!</div>
+      </form>
+      <form> <!--adding form for user to enter faviourte food-->
+        <div class="mb-3">
+          <label for="food" class="form-label">Enter your favourite food</label>
+          <input type="text" class="form-control" id="food">
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary" id="food-submit-button">Submit</button>
+        </div>
       </form>
     </div>
   </div>
