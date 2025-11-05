@@ -1,61 +1,120 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const supabaseUrl = "https://zxfcpudnurkimijljbop.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp4ZmNwdWRudXJraW1pamxqYm9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIyNzM1OTUsImV4cCI6MjA3Nzg0OTU5NX0.OOgGU3CbllrxvTw1D4IrJo6C8whwcxjck-d4cCIS3f0";
-
+const supabaseUrl = window.SUPABASE_URL;
+const supabaseAnonKey = window.SUPABASE_ANON_KEY;
 console.log("Supabase URL:", supabaseUrl);
 console.log("Supabase Anon Key:", supabaseAnonKey);
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+// is the user loged in?
+const checkAuth = async () => {
+    const { data: userData, error: userErr } = await supabase.auth.getUser();
+    console.log(userData.user);
+    if (userErr || !userData?.user) {
+      return false;
+    }
+    else {
+        return true;
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    const submitButton = document.getElementById("submit-button");
-    const submitResult = document.getElementById("submit-result");
+    const uploadImageButton = document.getElementById("upload-image-button");
+    const uploadImageResultText = document.getElementById("upload-image-result-text");
+    const uploadImageResult = document.getElementById("uploaded-image-preview");
     const fileInput = document.getElementById("file");
 
-    const foodSubmitButton = document.getElementById("food-submit-button");
+    const favFoodSubmitButton = document.getElementById("fav-food-submit-button");
+    const submitFavFoodResultText = document.getElementById("submit-fav-food-result-text");
     const foodInput = document.getElementById("food");
 
     //event listener for food submission
-    foodSubmitButton.addEventListener("click", async (event) => {
+    favFoodSubmitButton.addEventListener("click", async (event) => {
         event.preventDefault();
+
+        if (!await checkAuth()) {
+            submitFavFoodResultText.textContent = ("Please sign in to submit your favourite food.");
+            return;
+        }
+
         const favouriteFood = foodInput.value.trim();
         if (favouriteFood === "") {
-            //send text to supabase
+            submitFavFoodResultText.textContent = ("Please enter a food item.");
             return;
         } 
         try {
       const { data, error } = await supabase
         .from("imageInfo")
-        .insert([{ food_response: favouriteFood}]) //array form allows bulk later
-        .select(); // returns inserted row(s)
-
+        .insert([{ food_response: favouriteFood}]) 
+        .select(); 
       if (error) throw error;
 
-      // Success UI
-      alert("Thanks! Saved your response.");
+      submitFavFoodResultText.textContent = ("Thanks! Saved your response.");
       foodInput.value = "";
-      // You can also show the saved row somewhere if you want:
-      // console.log("Inserted:", data);
     } catch (err) {
       console.error(err);
-      alert("Sorry, we couldn't save that. Please try again.");
+      submitFavFoodResultText.textContent = ("Sorry, we couldn't save that. Please try again.");
     } finally {
-      foodSubmitButton.disabled = false;
-      foodSubmitButton.textContent = "Submit";
+      favFoodSubmitButton.disabled = false;
+      favFoodSubmitButton.textContent = "Submit";
     }
   });
 
     //event listeners
-    submitButton.addEventListener("click", (event) => {
+    uploadImageButton.addEventListener("click",async (event)  => {
         event.preventDefault();
+
+        if (!await checkAuth()) {
+            uploadImageResultText.textContent = "Please sign in to upload an image.";
+            return;
+        }
+
         if (fileInput.files.length == 0) {
-            submitResult.textContent = "Please select a file to upload.";
+            uploadImageResultText.textContent = "Please select a file to upload.";
             return;
         }
         else {
-            submitResult.textContent = "File uploaded successfully!"; // add stuff here once supabase connected
-            return;
+            const file = fileInput.files[0]; 
+            const filePath = String(file.name + Date.now());
+            const { data, error } = await supabase.storage
+                .from("images")
+                .upload(filePath, file);
+            if (error) {
+                console.error("Error uploading file:", error);
+                uploadImageResultText.textContent = "Error uploading file. Please try again.";
+            }
+            else {
+                //write the fiel path to imageInfo table
+                const { data: userData, error: userErr } = await supabase.auth.getUser();
+                const user = userData.user;
+
+                const { data: Data, error: Error } = await supabase
+                    .from("imageInfo")
+                    .insert([{ image_path: filePath ,user_id: user.id}]) 
+                    .select();
+                
+                if (Error) {
+                    console.error("Error saving file info:", Error);
+                    uploadImageResultText.textContent = "Error saving file info. Please try again.";
+                    return;
+                }
+                
+                // 2️⃣ Get a public URL
+                const { data: publicData } = await supabase.storage
+                .from("images")
+                .getPublicUrl(filePath);
+
+                const publicUrl = publicData.publicUrl;
+                console.log("Image URL:", publicUrl);
+
+
+                uploadImageResult.innerHTML = ""; // Clear previous image
+                uploadImageResult.src = publicUrl;
+                uploadImageResult.classList.remove("d-none");
+
+                uploadImageResultText.textContent = "File uploaded successfully!";
+            }
         }
     })
 })
