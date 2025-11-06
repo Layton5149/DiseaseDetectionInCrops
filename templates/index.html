@@ -11,6 +11,8 @@
       crossorigin="anonymous"
   >
 
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
   <script>
     window.SUPABASE_URL = "{{ SUPABASE_URL }}";
     window.SUPABASE_ANON_KEY = "{{ SUPABASE_ANON_KEY }}";
@@ -27,14 +29,26 @@
   </style>
 </head>
 
-<body class="bg-light d-flex flex-column min-vh-100 position-relative">
+<body class=" d-flex flex-column min-vh-100 position-relative">
 
-  <div class="top-right-btn">
-    <a href="/auth" class="btn btn-outline-primary btn-sm">Sign In / Sign Up</a>
-  </div>
+  <nav class="navbar navbar-light bg-white fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-semibold" href="/">Flask Demo</a>
+      <a class = "d-flex pe-4" href = "/">Home</a>
+      <a class = "d-flex pe-4" href = "/history">Image History</a>
+      <a class = "d-flex pe-4" href = "/diseaseInfo">Disease Encyclopedia</a>
+      <a class = "d-flex pe-4" href = "/modelInfo">About the project</a>
+      <a class = "d-flex pe-4" href = "/contact">Contact</a>
+
+      <div class="d-flex align-items-center ms-auto">
+        <a id="sign-in-button" href="/auth" class="btn btn-outline-primary btn-sm d-none">Sign In / Sign Up</a>
+        <button id="logout-button" class="btn btn-outline-danger btn-sm d-none ms-2">Log Out</button>
+      </div>
+    </div>
+  </nav>
 
   <div class="container d-flex flex-column justify-content-center align-items-center flex-grow-1">
-    <div class="card shadow-sm p-4 mt-5" style="max-width: 400px; width: 100%;">
+    <div class="card shadow-sm p-4 mt-5" style="max-width: 600px; width: 100%;">
       <h1 class="text-center mb-4 text-primary">Hello, Flask!</h1>
       <form>
         <div class="mb-3">
@@ -46,16 +60,6 @@
         </div>
         <div class="mt-3" id="upload-image-result-text"></div>
         <img id="uploaded-image-preview" class="img-fluid mt-3 d-none" />
-      </form>
-      <form class="mt-4">
-        <div class="mb-3">
-          <label for="food" class="form-label">Enter your favourite food</label>
-          <input type="text" class="form-control" id="food">
-        </div>
-        <div class="d-grid">
-          <button type="submit" class="btn btn-primary" id="fav-food-submit-button">Submit</button>
-        </div>
-        <div class="mt-3" id="submit-fav-food-result-text"></div>
       </form>
     </div>
   </div>

@@ -19,7 +19,11 @@ const checkAuth = async () => {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    const { data: userData, error: userErr } = await supabase.auth.getUser();
+    const userEmail = userData.user?.email || null;
+    const userId = userData.user?.id || null;
+
     const uploadImageButton = document.getElementById("upload-image-button");
     const uploadImageResultText = document.getElementById("upload-image-result-text");
     const uploadImageResult = document.getElementById("uploaded-image-preview");
@@ -29,39 +33,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitFavFoodResultText = document.getElementById("submit-fav-food-result-text");
     const foodInput = document.getElementById("food");
 
-    //event listener for food submission
-    favFoodSubmitButton.addEventListener("click", async (event) => {
-        event.preventDefault();
+    const logInButton = document.getElementById("sign-in-button");
+    const logoutButton = document.getElementById("logout-button");
 
-        if (!await checkAuth()) {
-            submitFavFoodResultText.textContent = ("Please sign in to submit your favourite food.");
-            return;
-        }
-
-        const favouriteFood = foodInput.value.trim();
-        if (favouriteFood === "") {
-            submitFavFoodResultText.textContent = ("Please enter a food item.");
-            return;
-        } 
-        try {
-      const { data, error } = await supabase
-        .from("imageInfo")
-        .insert([{ food_response: favouriteFood}]) 
-        .select(); 
-      if (error) throw error;
-
-      submitFavFoodResultText.textContent = ("Thanks! Saved your response.");
-      foodInput.value = "";
-    } catch (err) {
-      console.error(err);
-      submitFavFoodResultText.textContent = ("Sorry, we couldn't save that. Please try again.");
-    } finally {
-      favFoodSubmitButton.disabled = false;
-      favFoodSubmitButton.textContent = "Submit";
+    //log in / log out button visibility
+    if (await checkAuth()) {
+        document.getElementById("logout-button").classList.remove("d-none");
+        console.log("User signed in");
     }
-  });
+    else {
+        document.getElementById("sign-in-button").classList.remove("d-none");
+        console.log("User not signed in");
+    }
 
     //event listeners
+    //log out button
+    logoutButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error("Error signing out:", error);
+            return; 
+        }
+        // take user to sign in page
+        logInButton.classList.remove("d-none");
+        logoutButton.classList.add("d-none");
+        window.location.href = "/auth";
+    });
+
+    //upload image button
     uploadImageButton.addEventListener("click",async (event)  => {
         event.preventDefault();
 
@@ -86,12 +86,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             else {
                 //write the fiel path to imageInfo table
-                const { data: userData, error: userErr } = await supabase.auth.getUser();
-                const user = userData.user;
-
                 const { data: Data, error: Error } = await supabase
                     .from("imageInfo")
-                    .insert([{ image_path: filePath ,user_id: user.id}]) 
+                    .insert([{ image_path: filePath ,user_id: userId}]) 
                     .select();
                 
                 if (Error) {
@@ -100,10 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
                 
-                // 2️⃣ Get a public URL
                 const { data: publicData } = await supabase.storage
                 .from("images")
-                .getPublicUrl(filePath);
+                .getPublicUrl(filePath); // update to signed urls at a later date
 
                 const publicUrl = publicData.publicUrl;
                 console.log("Image URL:", publicUrl);
