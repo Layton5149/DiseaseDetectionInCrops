@@ -31,9 +31,9 @@
 
 <body class=" d-flex flex-column min-vh-100 position-relative">
 
-  <nav class="navbar navbar-light bg-white fixed-top shadow-sm">
+  <nav class="navbar fixed-top shadow" id = "navbar-custom">
     <div class="container">
-      <a class="navbar-brand fw-semibold" href="/">Flask Demo</a>
+      <a class="navbar-brand fw-semibold" href="/">Plant Health Tracker</a>
       <a class = "d-flex pe-4" href = "/">Home</a>
       <a class = "d-flex pe-4" href = "/history">Image History</a>
       <a class = "d-flex pe-4" href = "/diseaseInfo">Disease Encyclopedia</a>
@@ -49,7 +49,7 @@
 
   <div class="container d-flex flex-column justify-content-center align-items-center flex-grow-1">
     <div class="card shadow-sm p-4 mt-5" style="max-width: 600px; width: 100%;">
-      <h1 class="text-center mb-4 text-primary">Hello, Flask!</h1>
+      <h2 class="text-center mb-4">Disease Detection Tool</h1>
       <form>
         <div class="mb-3">
           <label for="file" class="form-label">Select an image to upload</label>

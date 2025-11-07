@@ -42,6 +42,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const historyContainer = document.getElementById("history-list");
 
+    if (data.length === 0) {
+        const noDataMessage = document.createElement("h1");
+        noDataMessage.textContent = "No image upload history found.";
+        historyContainer.appendChild(noDataMessage);
+        return;
+    }
+
     data.forEach(async (item)=> {
         console.log(item.image_path);
         const { data: imgData, error: signedErr } = await supabase.storage
