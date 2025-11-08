@@ -5,7 +5,7 @@ addEventListener("DOMContentLoaded", async() => {
     const messageResultText = document.getElementById("message-result-text");
 
     sendMessageButton.addEventListener("click", (e) => {
-        e.preventDefault(); // Prevent the default form submission
+        e.preventDefault(); //prevent the default form submission
         const email = document.getElementById("email").value;
         const name = document.getElementById("name").value;
         const message = document.getElementById("message").value;
@@ -37,7 +37,5 @@ addEventListener("DOMContentLoaded", async() => {
             console.error("Error:", error);
             alert("An unexpected error occurred.");
         });
-
     });
-
 });
