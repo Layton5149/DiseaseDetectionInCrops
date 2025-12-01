@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = "/auth";
     }
 
-    //get user info
+    //get user infos
     const { data: userData, error: userErr } = await supabase.auth.getUser();
     const userEmail = userData.user?.email || null;
     const userId = userData.user?.id || null;

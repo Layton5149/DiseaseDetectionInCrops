@@ -16,7 +16,7 @@
 
 </head>
 <body class=" d-flex flex-column min-vh-100 position-relative">
-    <nav class="navbar navbar-light bg-white fixed-top shadow-sm">
+    <nav class="navbar navbar-light bg-white fixed-top shadow-sm ">
         <div class="container">
             <a class="navbar-brand fw-semibold" href="/">Plant Health Tracker</a>
             <a class = "d-flex pe-4" href = "/">Home</a>
@@ -24,17 +24,397 @@
             <a class = "d-flex pe-4" href = "/diseaseInfo">Disease Encyclopedia</a>
             <a class = "d-flex pe-4" href = "/modelInfo">About the project</a>
             <a class = "d-flex pe-4" href = "/contact">Contact</a>
-    
-        <div class="d-flex align-items-center ms-auto">
-            <a id="sign-in-button" href="/auth" class="btn btn-outline-primary btn-sm d-none">Sign In / Sign Up</a>
-            <button id="logout-button" class="btn btn-outline-danger btn-sm d-none ms-2">Log Out</button>
+            <div class="d-flex align-items-center ms-auto">
+                <a id="sign-in-button" href="/auth" class="btn btn-outline-primary btn-sm d-none">Sign In / Sign Up</a>
+                <button id="logout-button" class="btn btn-outline-danger btn-sm d-none ms-2">Log Out</button>
+            </div>
         </div>
-
         </div>
+        
     </nav>
-    <main class ="container mt-5 pt-5">
-        <p>Welcome to the Disease Encyclopedia. Here you can find information about various diseases.</p>
-    </main>
+    
+    <div class="container d-flex flex-column justify-content-center align-items-center flex-grow-1 pt-4 mt-4">
+        <div class="fs-1 mt-3 pt-3">Plant Disease Profiles</div>
+        <div class="card shadow-sm p-4 mt-4" style="max-width: 900px; width: 100%; ">
+            <!--bacterial spot -->
+            <div id="bacterial-spot" class="pt-1 mt-1">
+                <div class="fs-4 fw-semibold">Bacterial Spot</div>
+                <div class="small text-muted mb-2">
+                    Danger Level: <strong>Moderate</strong>
+                    Commonness: <strong>Common</strong>
+                </div>
+
+                <div class="fw-semibold mt-2">What is it?</div>
+                <div class="mb-2">
+                    Bacterial spot is a bacterial infection, often caused by
+                    <em>Xanthomonas</em> species, that affects leaves and fruit of many
+                    plants, especially tomatoes and peppers.
+                </div>
+
+                <div class="fw-semibold mt-2">How does it affect the plant?</div>
+                <div class="mb-2">
+                    It causes small dark, water-soaked spots on leaves that enlarge and turn
+                    brown. Fruits may develop raised, corky spots. Overall, it reduces yield
+                    and plant vigor.
+                </div>
+
+                <div class="fw-semibold mt-2">History</div>
+                <div class="mb-2">
+                    First identified in the early 1900s in the United States, it spread
+                    rapidly through contaminated seeds and thrives in warm, humid climates.
+                </div>
+
+                <div class="fw-semibold mt-2">How to treat</div>
+                <ul class="mb-2">
+                    <li>Remove infected leaves.</li>
+                    <li>Use copper-based bactericides.</li>
+                    <li>Improve air circulation.</li>
+                    <li>Avoid overhead watering.</li>
+                    <li>Use disease-free seeds.</li>
+                </ul>
+
+                <div class="mb-1">
+                    <strong>Ease of Treatment:</strong> Medium (bacteria are persistent).
+                </div>
+                <div class="mb-1">
+                    <strong>Typical Cure Time:</strong> 2-4 weeks, depending on severity.
+                </div>
+            </div>
+            <div id="early-blight" class="pt-3 mt-3 border-top">
+                <div class="fs-4 fw-semibold">Early Blight</div>
+                <div class="small text-muted mb-2">
+                    Danger Level: <strong>Moderate-High</strong> &nbsp;|&nbsp;
+                    Commonness: <strong>Very Common</strong>
+                </div>
+
+                <div class="fw-semibold mt-2">What is it?</div>
+                <div class="mb-2">
+                    Early blight is a fungal disease caused by <em>Alternaria solani</em>.
+                </div>
+
+                <div class="fw-semibold mt-2">How does it affect the plant?</div>
+                <div class="mb-2">
+                    It creates brown leaf spots with concentric rings (a “bullseye”
+                    pattern). It can defoliate plants, weaken stems, and damage fruit.
+                </div>
+
+                <div class="fw-semibold mt-2">History</div>
+                <div class="mb-2">
+                    Recorded since the 1800s, early blight is now widespread in all major
+                    tomato- and potato-growing regions worldwide.
+                </div>
+
+                <div class="fw-semibold mt-2">How to treat</div>
+                <ul class="mb-2">
+                    <li>Remove infected leaves.</li>
+                    <li>Apply fungicides (chlorothalonil, copper, or biofungicides).</li>
+                    <li>Rotate crops regularly.</li>
+                    <li>Mulch soil to reduce splash infection.</li>
+                </ul>
+
+                <div class="mb-1"><strong>Ease of Treatment:</strong> Medium.</div>
+                <div class="mb-1">
+                    <strong>Typical Cure Time:</strong> 2-3 weeks with consistent
+                    management.
+                </div>
+            </div>
+
+                <!--late blight -->
+            <div id="late-blight" class="pt-3 mt-3 border-top">
+                <div class="fs-4 fw-semibold">Late Blight</div>
+                <div class="small text-muted mb-2">
+                    Danger Level: <strong>Very High</strong> &nbsp;|&nbsp;
+                    Commonness: <strong>Common in cool, wet climates</strong>
+                </div>
+
+                <div class="fw-semibold mt-2">What is it?</div>
+                <div class="mb-2">
+                    Late blight is caused by <em>Phytophthora infestans</em>, the same
+                    pathogen responsible for the historic Irish Potato Famine.
+                </div>
+
+                <div class="fw-semibold mt-2">How does it affect the plant?</div>
+                <div class="mb-2">
+                    It causes large brown lesions, white fuzzy mold on leaf undersides,
+                    rapid collapse of foliage, and rotting of fruits or tubers.
+                </div>
+
+                <div class="fw-semibold mt-2">History</div>
+                <div class="mb-2">
+                    In the 1840s, late blight caused massive potato crop failures in
+                    Ireland, leading to famine and migration. It remains a major threat to
+                    potatoes and tomatoes.
+                </div>
+
+                <div class="fw-semibold mt-2">How to treat</div>
+                <ul class="mb-2">
+                    <li>Immediately remove and destroy infected plants.</li>
+                    <li>Apply strong, preferably systemic fungicides.</li>
+                    <li>Avoid overhead watering and wet foliage.</li>
+                    <li>Grow resistant cultivars when possible.</li>
+                </ul>
+
+                <div class="mb-1">
+                    <strong>Ease of Treatment:</strong> Difficult — spreads extremely fast.
+                </div>
+                <div class="mb-1">
+                    <strong>Typical Cure Time:</strong> No true cure; focus on prevention
+                    and containment.
+                </div>
+            </div>
+
+                <!--leaf Mould -->
+            <div id="leaf-mould" class="pt-3 mt-3 border-top">
+                <div class="fs-4 fw-semibold">Leaf Mould</div>
+                <div class="small text-muted mb-2">
+                    Danger Level: <strong>Low-Moderate</strong> &nbsp;|&nbsp;
+                    Commonness: <strong>Common in greenhouses</strong>
+                </div>
+
+                <div class="fw-semibold mt-2">What is it?</div>
+                <div class="mb-2">
+                    Leaf mould is a fungal disease, usually caused by
+                    <em>Fulvia fulva</em> (also known as <em>Cladosporium fulvum</em>),
+                    mainly affecting tomatoes.
+                </div>
+
+                <div class="fw-semibold mt-2">How does it affect the plant?</div>
+                <div class="mb-2">
+                    It starts as yellow spots on the top of leaves with olive-green fuzzy
+                    mold on the underside. Leaves may curl and eventually drop.
+                </div>
+
+                <div class="fw-semibold mt-2">History</div>
+                <div class="mb-2">
+                    Known since the early 1900s, it is especially prevalent in humid
+                    greenhouse conditions where air movement is poor.
+                </div>
+
+                <div class="fw-semibold mt-2">How to treat</div>
+                <ul class="mb-2">
+                    <li>Increase ventilation and air flow.</li>
+                    <li>Reduce humidity.</li>
+                    <li>Apply fungicides as needed.</li>
+                    <li>Remove and destroy affected leaves.</li>
+                </ul>
+
+                <div class="mb-1"><strong>Ease of Treatment:</strong> Easy-Medium.</div>
+                <div class="mb-1"><strong>Typical Cure Time:</strong> 1-3 weeks.</div>
+            </div>
+
+                <!--target Spot -->
+            <div id="target-spot" class="pt-3 mt-3 border-top">
+                <div class="fs-4 fw-semibold">Target Spot</div>
+                <div class="small text-muted mb-2">
+                    Danger Level: <strong>Moderate</strong> &nbsp;|&nbsp;
+                    Commonness: <strong>Moderately Common</strong>
+                </div>
+
+                <div class="fw-semibold mt-2">What is it?</div>
+                <div class="mb-2">
+                    Target spot is a fungal disease caused by
+                    <em>Corynespora cassiicola</em>.
+                </div>
+
+                <div class="fw-semibold mt-2">How does it affect the plant?</div>
+                <div class="mb-2">
+                    It creates round spots with light centers and dark rings, giving a
+                    target-like appearance. Severe cases can cause significant leaf drop.
+                </div>
+
+                <div class="fw-semibold mt-2">History</div>
+                <div class="mb-2">
+                    First documented on rubber trees, target spot is now known to infect
+                    tomatoes, peppers, and many tropical plants.
+                </div>
+
+                <div class="fw-semibold mt-2">How to treat</div>
+                <ul class="mb-2">
+                    <li>Remove infected leaves.</li>
+                    <li>Improve plant spacing and airflow.</li>
+                    <li>Apply appropriate fungicides.</li>
+                </ul>
+
+                <div class="mb-1"><strong>Ease of Treatment:</strong> Medium.</div>
+                <div class="mb-1"><strong>Typical Cure Time:</strong> 2-3 weeks.</div>
+            </div>
+
+                <!--Yellow Leaf Curl Virus (TYLCV) -->
+            <div id="yellow-leaf-curl-virus" class="pt-3 mt-3 border-top">
+                <div class="fs-4 fw-semibold">Yellow Leaf Curl Virus (TYLCV)</div>
+                <div class="small text-muted mb-2">
+                    Danger Level: <strong>Very High</strong> &nbsp;|&nbsp;
+                    Commonness: <strong>Very Common in warm climates</strong>
+                </div>
+
+                <div class="fw-semibold mt-2">What is it?</div>
+                <div class="mb-2">
+                    Yellow leaf curl virus is a viral disease transmitted mainly by
+                    whiteflies, particularly damaging to tomatoes.
+                </div>
+
+                <div class="fw-semibold mt-2">How does it affect the plant?</div>
+                <div class="mb-2">
+                    Infected plants show stunted growth, curled yellow leaves, reduced fruit
+                    set, and general decline.
+                </div>
+
+                <div class="fw-semibold mt-2">History</div>
+                <div class="mb-2">
+                    Discovered in the mid-1900s, TYLCV has caused major outbreaks since the
+                    1990s due to the global spread of whiteflies.
+                </div>
+
+                <div class="fw-semibold mt-2">How to treat</div>
+                <div>There is <strong>no cure</strong> for infected plants. Management focuses on:</div>
+                <ul class="mb-2">
+                    <li>Removing and destroying infected plants.</li>
+                    <li>Controlling whiteflies (nets, insecticides, sticky traps).</li>
+                    <li>Planting virus-resistant varieties.</li>
+                    <li>Using reflective mulches to deter whiteflies.</li>
+                </ul>
+
+                <div class="mb-1">
+                    <strong>Ease of Treatment:</strong> Difficult (virus cannot be cured).
+                </div>
+                <div class="mb-1">
+                    <strong>Typical Cure Time:</strong> No cure — prevention and vector
+                    control only.
+                </div>
+            </div>
+
+                <!--mosaic Virus -->
+            <div id="mosaic-virus" class="pt-3 mt-3 border-top">
+                <div class="fs-4 fw-semibold">Mosaic Virus (e.g., TMV, CMV)</div>
+                <div class="small text-muted mb-2">
+                    Danger Level: <strong>Moderate</strong> &nbsp;|&nbsp;
+                    Commonness: <strong>Very Common</strong>
+                </div>
+
+                <div class="fw-semibold mt-2">What is it?</div>
+                <div class="mb-2">
+                    Mosaic viruses are a group of plant viruses that cause mosaic-pattern
+                    discoloration on leaves. Examples include Tobacco Mosaic Virus (TMV)
+                    and Cucumber Mosaic Virus (CMV).
+                </div>
+
+                <div class="fw-semibold mt-2">How does it affect the plant?</div>
+                <div class="mb-2">
+                    Leaves develop mottled light and dark green patches, become distorted,
+                    and plants grow slowly with reduced yields.
+                </div>
+
+                <div class="fw-semibold mt-2">History</div>
+                <div class="mb-2">
+                    Tobacco Mosaic Virus (TMV) was the first virus ever discovered,
+                    identified in 1892, making it historically important in virology.
+                </div>
+
+                <div class="fw-semibold mt-2">How to treat</div>
+                <div>There is no cure for mosaic viruses, so management focuses on prevention:</div>
+                <ul class="mb-2">
+                    <li>Remove and destroy infected plants.</li>
+                    <li>Sanitize tools and hands regularly.</li>
+                    <li>Control insect vectors like aphids.</li>
+                    <li>Plant resistant varieties when available.</li>
+                </ul>
+
+                <div class="mb-1">
+                    <strong>Ease of Treatment:</strong> Difficult — virus can persist on
+                    surfaces and plant debris.
+                </div>
+                <div class="mb-1">
+                    <strong>Typical Cure Time:</strong> No cure; focus on preventing
+                    spread.
+                </div>
+            </div>
+
+                <!--septoria leaf spot -->
+            <div id="septoria-leaf-spot" class="pt-3 mt-3 border-top">
+                <div class="fs-4 fw-semibold">Septoria Leaf Spot</div>
+                <div class="small text-muted mb-2">
+                    Danger Level: <strong>Moderate</strong> &nbsp;|&nbsp;
+                    Commonness: <strong>Common</strong>
+                </div>
+
+                <div class="fw-semibold mt-2">What is it?</div>
+                <div class="mb-2">
+                    Septoria leaf spot is a fungal disease caused by
+                    <em>Septoria lycopersici</em>, commonly affecting tomatoes.
+                </div>
+
+                <div class="fw-semibold mt-2">How does it affect the plant?</div>
+                <div class="mb-2">
+                    It causes small circular spots with dark borders and light centers on
+                    leaves. Severe infections cause heavy leaf drop, but rarely kill the
+                    plant outright.
+                </div>
+
+                <div class="fw-semibold mt-2">History</div>
+                <div class="mb-2">
+                    Described since the 1800s, it is common in humid regions and home
+                    gardens.
+                </div>
+
+                <div class="fw-semibold mt-2">How to treat</div>
+                <ul class="mb-2">
+                    <li>Remove and destroy infected leaves.</li>
+                    <li>Apply fungicides such as chlorothalonil or copper-based products.</li>
+                    <li>Improve spacing between plants for better airflow.</li>
+                    <li>Avoid overhead watering to keep leaves dry.</li>
+                </ul>
+
+                <div class="mb-1"><strong>Ease of Treatment:</strong> Medium.</div>
+                <div class="mb-1"><strong>Typical Cure Time:</strong> 2-4 weeks.</div>
+            </div>
+
+                <!--Spider Mites -->
+            <div id="spider-mites" class="pt-3 mt-3 border-top">
+                <div class="fs-4 fw-semibold">Spider Mites</div>
+                <div class="small text-muted mb-1">
+                    (Technically a pest, not a disease)
+                </div>
+                <div class="small text-muted mb-2">
+                    Danger Level: <strong>Moderate</strong> &nbsp;|&nbsp;
+                    Commonness: <strong>Very Common</strong>
+                </div>
+
+                <div class="fw-semibold mt-2">What is it?</div>
+                <div class="mb-2">
+                    Spider mites are tiny arachnid pests that feed on plant sap, often
+                    found on the undersides of leaves.
+                </div>
+
+                <div class="fw-semibold mt-2">How does it affect the plant?</div>
+                <div class="mb-2">
+                    Leaves develop yellow speckles, plants may be covered with fine
+                    webbing, and heavy infestations can weaken or kill plants.
+                </div>
+
+                <div class="fw-semibold mt-2">History</div>
+                <div class="mb-2">
+                    Spider mites are widespread across global agriculture and home
+                    gardens, with outbreaks often linked to hot, dry conditions.
+                </div>
+
+                <div class="fw-semibold mt-2">How to treat</div>
+                <ul class="mb-2">
+                    <li>Wash leaves with a strong jet of water.</li>
+                    <li>Use insecticidal soap or neem oil.</li>
+                    <li>Release predatory mites that eat spider mites.</li>
+                    <li>Increase humidity around plants.</li>
+                </ul>
+
+                <div class="mb-1">
+                    <strong>Ease of Treatment:</strong> Easy-Medium.
+                </div>
+                <div class="mb-1">
+                    <strong>Typical Cure Time:</strong> 1-2 weeks for mild cases; 3-5
+                    weeks for heavy infestations.
+                </div>
+            </div>
+        </div>
+    </div>
     <footer>
     </footer>
 </body>
