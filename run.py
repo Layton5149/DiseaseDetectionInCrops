@@ -1,8 +1,14 @@
+import io
 from flask import Flask, jsonify, render_template, request
 from dotenv import load_dotenv
 import os
 from flask_mail import Mail, Message
 import re
+import keras
+from tensorflow.keras.preprocessing import image
+import numpy as np
+import requests
+import tensorflow as tf
 
 load_dotenv("apiKey.env")
 
@@ -75,7 +81,6 @@ def contactSubmit():
     email = (data.get("email") or "").strip()
     message = (data.get("message") or "").strip()
 
-    # Build the email
     subject = f"New contact form message from {name}"
     body = f"From: {name} <{email}>\n\nMessage:\n{message}"
 
@@ -85,15 +90,40 @@ def contactSubmit():
             recipients=[RECIPIENT_EMAIL],
             body=body,
         )
-        # Don't spoof the sender; set Reply-To so you can answer them
         msg.reply_to = email
 
         mail.send(msg)
         return jsonify({"ok": True, "message": "Thanks! Your message was sent."}), 200
     except Exception as e:
-        # Log in real apps; don't leak details to the client
         return jsonify({"ok": False, "error": "Failed to send message, please make sure all fields are complete."}), 500
 
+#image classification request handler
+@app.post("/classify-image")
+def classifyImage():
+    #get the image file from the request
+    img_path = requests.get(request.get_json().get("publicUrl"))
+
+    #resize and preprocess the image
+    img = tf.keras.utils.load_img(
+        io.BytesIO(img_path.content),
+        target_size=(224, 224)
+    )
+    img_array = tf.keras.utils.img_to_array(img)
+    img_array = img_array / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
+
+    #model.predict
+    model = keras.models.load_model('disease_detection_model.h5')
+    predictions = model.predict(img_array)
+    
+    #return the predction as json
+    predicted_class = predictions.argmax(axis=-1)[0]
+    confidence = float(predictions[0][predicted_class])
+    print ("hello world d")
+    return jsonify({
+        "predicted_class": int(predicted_class),
+        "confidence": confidence
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)

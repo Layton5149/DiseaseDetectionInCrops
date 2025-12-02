@@ -110,8 +110,25 @@ document.addEventListener("DOMContentLoaded", async () => {
                 uploadImageResult.classList.remove("d-none");
 
                 uploadImageResultText.textContent = "File uploaded successfully!";
+
+                //classift image
+                fetch("/classify-image", {
+                    "method" : "post",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": JSON.stringify({
+                        publicUrl: publicUrl
+                    })
+                }).then(response => response.json())
+                .then(data => {
+                    console.log("Image classification result:", data);
+                    const classificationResultText = document.getElementById("image-classification-result-text");
+                    classificationResultText.textContent = `Predicted Disease: ${data.predicted_class} (Confidence: ${data.confidence}%)`;
+                });
             }
         }
+
     })
 })
 
