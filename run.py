@@ -10,7 +10,26 @@ import numpy as np
 import requests
 import tensorflow as tf
 
+
 load_dotenv("apiKey.env")
+
+class_names = [
+    "Pepper bell Bacterial spot",
+    "Pepper bell healthy",
+    "Potato Early blight",
+    "Potato Late blight",
+    "Potato healthy",
+    "Tomato Bacterial spot",
+    "Tomato Early blight",
+    "Tomato Late blight",
+    "Tomato Leaf Mold",
+    "Tomato Septoria leaf spot",
+    "Tomato Spider mites",
+    "Tomato Target Spot",
+    "Tomato YellowLeaf Curl Virus",
+    "Tomato mosaic virus",
+    "Tomato healthy"
+]
 
 app = Flask(__name__)
 
@@ -115,13 +134,16 @@ def classifyImage():
     #model.predict
     model = keras.models.load_model('disease_detection_model.h5')
     predictions = model.predict(img_array)
-    
+
     #return the predction as json
     predicted_class = predictions.argmax(axis=-1)[0]
-    confidence = float(predictions[0][predicted_class])
+    #map the class to a disease name
+    predicted_class_name = class_names[predicted_class]
+    confidence = float(predictions[0][predicted_class]) * 100
+    
     print ("hello world d")
     return jsonify({
-        "predicted_class": int(predicted_class),
+        "predicted_class": str(predicted_class_name),
         "confidence": confidence
     })
 
