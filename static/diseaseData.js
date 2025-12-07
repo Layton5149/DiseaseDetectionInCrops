@@ -7,7 +7,8 @@ export const diseaseDescriptions = {
     "Yellow Leaf Curl Virus (TYLCV)": "Yellow leaf curl virus is a viral disease transmitted mainly by whiteflies, particularly damaging to tomatoes.",
     "Mosaic Virus": "Mosaic viruses are a group of plant viruses that cause mosaic-pattern discoloration on leaves. Examples include Tobacco Mosaic Virus (TMV) and Cucumber Mosaic Virus (CMV).",
     "Septoria Leaf Spot": "Septoria leaf spot is a fungal disease caused by Septoria lycopersici, commonly affecting tomatoes.",
-    "Spider Mites": "Spider mites are tiny arachnid pests that feed on plant sap, often found on the undersides of leaves."
+    "Spider Mites": "Spider mites are tiny arachnid pests that feed on plant sap, often found on the undersides of leaves.",
+    "Healthy":"This plant appears to be healthy with no visible signs of disease."
 };
 
 export const diseaseLinks = {

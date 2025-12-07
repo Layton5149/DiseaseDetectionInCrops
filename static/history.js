@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { diseaseDescriptions, diseaseLinks } from "./diseaseData.js";
 
 const supabaseUrl = window.SUPABASE_URL;
 const supabaseAnonKey = window.SUPABASE_ANON_KEY;
@@ -51,13 +52,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     data.forEach(async (item)=> {
         console.log(item.image_path);
-        const { data: imgData, error: signedErr } = await supabase.storage
+        const { data: imgData, error: Error } = await supabase.storage
             .from('images')
             .getPublicUrl(item.image_path); // update to signed urls at a later date
-        if (signedErr) {
-            console.error("Error creating signed URL:", signedErr);
+        if (Error) {
+            console.error("Error creating signed URL:", Error);
             return;
         }
+        var dictionaryKey = "";
 
         //create a container for each history item
         const itemContainer = document.createElement("div");
@@ -68,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         //create a container for text part of card
         const textContainer = document.createElement("div");
-        textContainer.classList.add("history-text-container", "mb-2");
+        textContainer.classList.add("history-text-container", "mb-1");
         textContainer.style.marginLeft = "20px";
         textContainer.style.marginRight = "20px";
         
@@ -81,16 +83,40 @@ document.addEventListener("DOMContentLoaded", async () => {
         itemContainer.appendChild(image);
 
         //text elements 
+        //create disease name element
+        const diseaseNameElem = document.createElement("p");
+        const lowerName = item.disease_name.toLowerCase();
+        console.log ("lowerName:", lowerName); //logStatement
+
+        for (const key of Object.keys(diseaseDescriptions)) {
+            if (lowerName.includes(key.toLowerCase())) {
+                diseaseNameElem.textContent = "Condition: " + key;
+                dictionaryKey = key;
+                break;;
+            }
+        }
+
         //create timestamp element
         const timestamp = new Date(item.created_at).toLocaleString();
         const timestampElem = document.createElement("p");
         timestampElem.textContent = "Uploaded at: " + timestamp;
-        textContainer.appendChild(timestampElem);
 
         //create description element (placeholder for now )
         const descriptionElem = document.createElement("p");
-        descriptionElem.textContent = "Description: (not available)";
+        descriptionElem.textContent = diseaseDescriptions[dictionaryKey];
+        
+        //append text elements
+        textContainer.appendChild(timestampElem);
+        textContainer.appendChild(diseaseNameElem);
         textContainer.appendChild(descriptionElem);
+
+        //hyperlink to disease info page
+        if (dictionaryKey != "Healthy") {
+            const infoLink = document.createElement("a");
+            infoLink.href = "/diseaseInfo"+diseaseLinks[dictionaryKey];
+            infoLink.textContent = "More Information";
+            textContainer.appendChild(infoLink);
+        }
 
         //append children to parent containers
         itemContainer.appendChild(textContainer);
