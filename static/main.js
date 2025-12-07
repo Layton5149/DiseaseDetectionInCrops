@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { diseaseDescriptions, diseaseLinks } from "./diseaseData.js";
 
 const supabaseUrl = window.SUPABASE_URL;
 const supabaseAnonKey = window.SUPABASE_ANON_KEY;
@@ -25,13 +26,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const userId = userData.user?.id || null;
 
     const uploadImageButton = document.getElementById("upload-image-button");
-    const uploadImageResultText = document.getElementById("upload-image-result-text");
-    const uploadImageResult = document.getElementById("uploaded-image-preview");
-    const fileInput = document.getElementById("file");
 
-    const favFoodSubmitButton = document.getElementById("fav-food-submit-button");
-    const submitFavFoodResultText = document.getElementById("submit-fav-food-result-text");
-    const foodInput = document.getElementById("food");
+    const classificationResultsContainer = document.getElementById("classification-results-container");
+    const classificationResultText = document.getElementById("image-classification-result-text");
+    const uploadImageResult = document.getElementById("uploaded-image-preview"); //img element
+
+    const uploadImageResultText = document.getElementById("upload-image-result-text");
+    
+    const fileInput = document.getElementById("file");
 
     const logInButton = document.getElementById("sign-in-button");
     const logoutButton = document.getElementById("logout-button");
@@ -86,46 +88,67 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             else {
                 //write the fiel path to imageInfo table
-                const { data: Data, error: Error } = await supabase
+                const { data: insertData, error: Error } = await supabase
                     .from("imageInfo")
                     .insert([{ image_path: filePath ,user_id: userId}]) 
                     .select();
                 
-                if (Error) {
+                if (Error) {    
                     console.error("Error saving file info:", Error);
                     uploadImageResultText.textContent = "Error saving file info. Please try again.";
                     return;
                 }
+                else {
+                    uploadImageResultText.textContent = "File uploaded successfully!";
+                }
+
+                const imageInfoRow = insertData?.[0];
+                const imageInfoId = imageInfoRow?.id;
+                console.log("Inserted imageInfo row:", imageInfoRow); //logStatement
                 
                 const { data: publicData } = await supabase.storage
                 .from("images")
                 .getPublicUrl(filePath); // update to signed urls at a later date
 
                 const publicUrl = publicData.publicUrl;
-                console.log("Image URL:", publicUrl);
+                console.log("Image URL:", publicUrl); //logStatement
 
+                //classift image
+                const classifyResponse = await fetch("/classify-image", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ publicUrl })
+                    });
 
-                uploadImageResult.innerHTML = ""; // Clear previous image
+                const classifyData = await classifyResponse.json();
+                console.log("Image classification result:", classifyData);
+
+                classificationResultsContainer.classList.remove("d-none");
+                classificationResultsContainer.classList.add("d-flex");
+
                 uploadImageResult.src = publicUrl;
                 uploadImageResult.classList.remove("d-none");
 
-                uploadImageResultText.textContent = "File uploaded successfully!";
+                classificationResultText.textContent = `Predicted Disease: ${classifyData.predicted_class} (Confidence: ${classifyData.confidence.toFixed(2)}%)`;
+                
+                //upadate the imageInfo table with classification results
+                console.log("filePath:", filePath); //logStatement
+                console.log("imageInfoId:", imageInfoId); //logStatement
+                console.log("predicted_class:", classifyData.predicted_class); //logStatement
 
-                //classift image
-                fetch("/classify-image", {
-                    "method" : "post",
-                    "headers": {
-                        "Content-Type": "application/json"
-                    },
-                    "body": JSON.stringify({
-                        publicUrl: publicUrl
-                    })
-                }).then(response => response.json())
-                .then(data => {
-                    console.log("Image classification result:", data);
-                    const classificationResultText = document.getElementById("image-classification-result-text");
-                    classificationResultText.textContent = `Predicted Disease: ${data.predicted_class} (Confidence: ${data.confidence.toFixed(2)}%)`;
-                });
+                const { data: updateData, updateError } = await supabase
+                    .from("imageInfo")
+                    .update({disease_name: classifyData.predicted_class })
+                    .eq("id", imageInfoId)
+                    .select();
+                if (updateError) {
+                    console.error("Error updating classification result:", error);
+                    return;
+                }
+                else{
+                    console.log("Classification result updated successfully:", updateData);
+                }
+                console.log("File upload and classification process completed.");
             }
         }
 
