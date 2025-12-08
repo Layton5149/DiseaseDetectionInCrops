@@ -104,14 +104,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const imageInfoRow = insertData?.[0];
                 const imageInfoId = imageInfoRow?.id;
-                console.log("Inserted imageInfo row:", imageInfoRow); //logStatement
+                console.log("Inserted imageInfo row:", imageInfoRow);  
                 
                 const { data: publicData } = await supabase.storage
                 .from("images")
                 .getPublicUrl(filePath); // update to signed urls at a later date
 
                 const publicUrl = publicData.publicUrl;
-                console.log("Image URL:", publicUrl); //logStatement
 
                 //classift image
                 const classifyResponse = await fetch("/classify-image", {
@@ -132,10 +131,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 classificationResultText.textContent = `Predicted Disease: ${classifyData.predicted_class} (Confidence: ${classifyData.confidence.toFixed(2)}%)`;
                 
                 //upadate the imageInfo table with classification results
-                console.log("filePath:", filePath); //logStatement
-                console.log("imageInfoId:", imageInfoId); //logStatement
-                console.log("predicted_class:", classifyData.predicted_class); //logStatement
-
                 const { data: updateData, updateError } = await supabase
                     .from("imageInfo")
                     .update({disease_name: classifyData.predicted_class })

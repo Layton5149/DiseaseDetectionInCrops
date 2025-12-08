@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         //create disease name element
         const diseaseNameElem = document.createElement("p");
         const lowerName = item.disease_name.toLowerCase();
-        console.log ("lowerName:", lowerName); //logStatement
+        console.log ("lowerName:", lowerName);  
 
         for (const key of Object.keys(diseaseDescriptions)) {
             if (lowerName.includes(key.toLowerCase())) {
