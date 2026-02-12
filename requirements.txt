@@ -1,8 +1,11 @@
-flask==3.0.3
-gunicorn
+flask
 python-dotenv
+Flask-Mail
+
 tensorflow
 keras
 numpy
-opencv-python
+
 pillow
+requests
+gunicorn
