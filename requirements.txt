@@ -1,8 +1,8 @@
 flask==3.0.3
 gunicorn
 python-dotenv
-tensorflow==2.13.0
-keras==2.13.0
-numpy==1.24.3
-opencv-python==4.8.0.74
+tensorflow
+keras
+numpy
+opencv-python
 pillow
