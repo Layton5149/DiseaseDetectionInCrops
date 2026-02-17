@@ -145,8 +145,12 @@ def classifyImage():
     img_array = img_array / 255.0
     img_array = np.expand_dims(img_array, axis=0)
 
+    print ("image recieved!")
+
     #model.predict
+    print ("attemltin classification")
     predictions = model.predict(img_array)
+    print ("classification complete!")
 
     #return the predction as json
     predicted_class = predictions.argmax(axis=-1)[0]
