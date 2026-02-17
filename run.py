@@ -3,6 +3,7 @@ from flask import Flask, jsonify, render_template, request
 from dotenv import load_dotenv
 import os
 from flask_mail import Mail, Message
+import urllib.request
 import re
 import keras
 from tensorflow.keras.preprocessing import image
@@ -12,6 +13,14 @@ import tensorflow as tf
 
 
 load_dotenv("apiKey.env")
+
+MODEL_URL = "https://drive.google.com/file/d/195bzT39rh1Sf7-Tm-2NDB4QYTHB_rUYw/view?usp=drive_link"
+MODEL_PATH = "model.h5"
+
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model...")
+    urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+    print("Download complete.")
 
 class_names = [
     "Pepper bell Bacterial spot",
@@ -132,7 +141,7 @@ def classifyImage():
     img_array = np.expand_dims(img_array, axis=0)
 
     #model.predict
-    model = keras.models.load_model('disease_detection_model.h5')
+    model = keras.models.load_model(MODEL_PATH) #HERE YOU NEED TO PUT THE PATH TO YOUR MODEL
     predictions = model.predict(img_array)
 
     #return the predction as json
