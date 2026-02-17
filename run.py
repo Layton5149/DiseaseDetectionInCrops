@@ -14,7 +14,7 @@ import tensorflow as tf
 
 load_dotenv("apiKey.env")
 
-MODEL_URL = "https://drive.google.com/file/d/195bzT39rh1Sf7-Tm-2NDB4QYTHB_rUYw/view?usp=drive_link"
+MODEL_URL = "https://drive.google.com/uc?export=download&id=195bzT39rh1Sf7-Tm-2NDB4QYTHB_rUYw"
 MODEL_PATH = "model.h5"
 
 if not os.path.exists(MODEL_PATH):
