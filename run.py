@@ -14,13 +14,16 @@ import tensorflow as tf
 
 load_dotenv("apiKey.env")
 
-MODEL_URL = "https://drive.google.com/uc?export=download&id=195bzT39rh1Sf7-Tm-2NDB4QYTHB_rUYw"
+MODEL_URL = "https://huggingface.co/Esquire76/crop-disease-model/resolve/main/disease_detection_model.h5"
 MODEL_PATH = "model.h5"
 
 if not os.path.exists(MODEL_PATH):
     print("Downloading model...")
     urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
     print("Download complete.")
+
+model = keras.models.load_model(MODEL_PATH)
+print("Model loaded successfully.")
 
 class_names = [
     "Pepper bell Bacterial spot",
@@ -141,7 +144,6 @@ def classifyImage():
     img_array = np.expand_dims(img_array, axis=0)
 
     #model.predict
-    model = keras.models.load_model(MODEL_PATH) #HERE YOU NEED TO PUT THE PATH TO YOUR MODEL
     predictions = model.predict(img_array)
 
     #return the predction as json
