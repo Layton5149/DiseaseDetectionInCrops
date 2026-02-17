@@ -133,6 +133,7 @@ def contactSubmit():
 #image classification request handler
 @app.post("/classify-image")
 def classifyImage():
+    print ("start classification request")
     #get the image file from the request
     img_path = requests.get(request.get_json().get("publicUrl"))
 
