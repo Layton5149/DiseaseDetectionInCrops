@@ -8,19 +8,16 @@ import re
 import keras
 import numpy as np
 import requests
+import tensorflow as tf
 
 load_dotenv("apiKey.env")
 
-MODEL_URL = "https://huggingface.co/Esquire76/crop-disease-model/resolve/main/disease_detection_model.h5"
-MODEL_PATH = "model.h5"
+#load the TFLite model
+interpreter = tf.lite.Interpreter(model_path="disease_detection_model.tflite")
+interpreter.allocate_tensors()
 
-if not os.path.exists(MODEL_PATH):
-    print("Downloading model...")
-    urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
-    print("Download complete.")
-
-model = keras.models.load_model(MODEL_PATH)
-print("Model loaded successfully.")
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
 
 class_names = [
     "Pepper bell Bacterial spot",
@@ -128,39 +125,30 @@ def contactSubmit():
 #image classification request handler
 @app.post("/classify-image")
 def classifyImage():
-    print ("start classification request")
-    #get the image file from the request
-    
     img_path = requests.get(request.get_json().get("publicUrl"))
-    #resize and preprocess the image
+
     img = keras.utils.load_img(
         io.BytesIO(img_path.content),
         target_size=(224, 224)
     )
+
     img_array = keras.utils.img_to_array(img)
     img_array = img_array / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
+    img_array = np.expand_dims(img_array, axis=0).astype("float32")
 
-    print ("image recieved!")
+    interpreter.set_tensor(input_details[0]['index'], img_array)
+    interpreter.invoke()
+    predictions = interpreter.get_tensor(output_details[0]['index'])
 
-    
-
-    #model.predict
-    print ("attemltin classification")
-    predictions = model.predict(img_array)
-    print ("classification complete!")
-    """
-    #return the predction as json
     predicted_class = predictions.argmax(axis=-1)[0]
-    #map the class to a disease name
     predicted_class_name = class_names[predicted_class]
     confidence = float(predictions[0][predicted_class]) * 100
-    """
-    print ("hello world d")
+
     return jsonify({
-        "predicted_class": str("healthy"),
-        "confidence": 95.0
+        "predicted_class": predicted_class_name,
+        "confidence": confidence
     })
+
 
 if __name__ == "__main__":
     app.run(debug=True)
