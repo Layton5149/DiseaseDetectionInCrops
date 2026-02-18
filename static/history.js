@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         textContainer.appendChild(descriptionElem);
 
         //hyperlink to disease info page
-        if (dictionaryKey != "Healthy") {
+        if (item.disease_name != null && dictionaryKey != "Healthy") {
             const infoLink = document.createElement("a");
             infoLink.href = "/diseaseInfo"+diseaseLinks[dictionaryKey];
             infoLink.textContent = "More Information";

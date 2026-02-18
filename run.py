@@ -130,8 +130,8 @@ def contactSubmit():
 def classifyImage():
     print ("start classification request")
     #get the image file from the request
+    """
     img_path = requests.get(request.get_json().get("publicUrl"))
-
     #resize and preprocess the image
     img = keras.utils.load_img(
         io.BytesIO(img_path.content),
@@ -153,11 +153,11 @@ def classifyImage():
     #map the class to a disease name
     predicted_class_name = class_names[predicted_class]
     confidence = float(predictions[0][predicted_class]) * 100
-    
+    """
     print ("hello world d")
     return jsonify({
-        "predicted_class": str(predicted_class_name),
-        "confidence": confidence
+        "predicted_class": str("healthy"),
+        "confidence": 95.0
     })
 
 if __name__ == "__main__":
