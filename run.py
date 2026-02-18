@@ -143,13 +143,13 @@ def classifyImage():
 
     print ("image recieved!")
 
-    """
+    
 
     #model.predict
     print ("attemltin classification")
     predictions = model.predict(img_array)
     print ("classification complete!")
-
+    """
     #return the predction as json
     predicted_class = predictions.argmax(axis=-1)[0]
     #map the class to a disease name
