@@ -6,13 +6,8 @@ from flask_mail import Mail, Message
 import urllib.request
 import re
 import keras
-from tensorflow.keras.preprocessing import image
 import numpy as np
 import requests
-import tensorflow as tf
-
-tf.config.threading.set_inter_op_parallelism_threads(1)
-tf.config.threading.set_intra_op_parallelism_threads(1)
 
 load_dotenv("apiKey.env")
 
@@ -138,11 +133,11 @@ def classifyImage():
     img_path = requests.get(request.get_json().get("publicUrl"))
 
     #resize and preprocess the image
-    img = tf.keras.utils.load_img(
+    img = keras.utils.load_img(
         io.BytesIO(img_path.content),
         target_size=(224, 224)
     )
-    img_array = tf.keras.utils.img_to_array(img)
+    img_array = keras.utils.img_to_array(img)
     img_array = img_array / 255.0
     img_array = np.expand_dims(img_array, axis=0)
 
