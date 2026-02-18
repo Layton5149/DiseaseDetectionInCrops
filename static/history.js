@@ -85,14 +85,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         //text elements 
         //create disease name element
         const diseaseNameElem = document.createElement("p");
-        const lowerName = item.disease_name.toLowerCase();
-        console.log ("lowerName:", lowerName);  
+        if (item.disease_name == null) {
+            diseaseNameElem.textContent = "Condition: Unknown";
+        } else {
+            const lowerName = item.disease_name.toLowerCase();
+            console.log ("lowerName:", lowerName);  
 
-        for (const key of Object.keys(diseaseDescriptions)) {
-            if (lowerName.includes(key.toLowerCase())) {
-                diseaseNameElem.textContent = "Condition: " + key;
-                dictionaryKey = key;
-                break;;
+            for (const key of Object.keys(diseaseDescriptions)) {
+                if (lowerName.includes(key.toLowerCase())) {
+                    diseaseNameElem.textContent = "Condition: " + key;
+                    dictionaryKey = key;
+                    break;;
+                }
             }
         }
 
