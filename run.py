@@ -130,7 +130,7 @@ def contactSubmit():
 def classifyImage():
     print ("start classification request")
     #get the image file from the request
-    """
+    
     img_path = requests.get(request.get_json().get("publicUrl"))
     #resize and preprocess the image
     img = keras.utils.load_img(
@@ -142,6 +142,8 @@ def classifyImage():
     img_array = np.expand_dims(img_array, axis=0)
 
     print ("image recieved!")
+
+    """
 
     #model.predict
     print ("attemltin classification")
