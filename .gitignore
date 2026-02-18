@@ -26,6 +26,6 @@ Thumbs.db
 node_modules
 
 trainCNN/
-
+convert.py
 
 disease_detection_model.h5

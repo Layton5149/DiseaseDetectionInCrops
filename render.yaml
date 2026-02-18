@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: disease-detection-incrops
-    env: python
-    plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn run:app
-    runtime: python-3.10.13
