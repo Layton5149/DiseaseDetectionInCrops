@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             else {
                 //write the fiel path to imageInfo table
+                console.log("trying to save file info to database:");
                 const { data: insertData, error: Error } = await supabase
                     .from("imageInfo")
                     .insert([{ image_path: filePath ,user_id: userId}]) 
@@ -111,39 +112,41 @@ document.addEventListener("DOMContentLoaded", async () => {
                 .getPublicUrl(filePath); // update to signed urls at a later date
 
                 const publicUrl = publicData.publicUrl;
+                console.log("Public URL:", publicUrl);
+                console.log("trying to classify image...");
 
                 //classift image
-                const classifyResponse = await fetch("/classify-image", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ publicUrl })
-                    });
+                //const classifyResponse = await fetch("/classify-image", {
+                //       method: "POST",
+                //       headers: { "Content-Type": "application/json" },
+                //        body: JSON.stringify({ publicUrl })
+                //    });
 
-                const classifyData = await classifyResponse.json();
-                console.log("Image classification result:", classifyData);
+                //const classifyData = await classifyResponse.json();
+                //console.log("Image classification result:", classifyData);
 
-                classificationResultsContainer.classList.remove("d-none");
-                classificationResultsContainer.classList.add("d-flex");
+                //classificationResultsContainer.classList.remove("d-none");
+                //classificationResultsContainer.classList.add("d-flex");
 
-                uploadImageResult.src = publicUrl;
-                uploadImageResult.classList.remove("d-none");
+                //uploadImageResult.src = publicUrl;
+                //uploadImageResult.classList.remove("d-none");
 
-                classificationResultText.textContent = `Predicted Disease: ${classifyData.predicted_class} (Confidence: ${classifyData.confidence.toFixed(2)}%)`;
+                //classificationResultText.textContent = `Predicted Disease: ${classifyData.predicted_class} (Confidence: ${classifyData.confidence.toFixed(2)}%)`;
                 
                 //upadate the imageInfo table with classification results
-                const { data: updateData, updateError } = await supabase
-                    .from("imageInfo")
-                    .update({disease_name: classifyData.predicted_class })
-                    .eq("id", imageInfoId)
-                    .select();
-                if (updateError) {
-                    console.error("Error updating classification result:", error);
-                    return;
-                }
-                else{
-                    console.log("Classification result updated successfully:", updateData);
-                }
-                console.log("File upload and classification process completed.");
+                //const { data: updateData, updateError } = await supabase
+                  //  .from("imageInfo")
+                   // .update({disease_name: classifyData.predicted_class })
+                    //.eq("id", imageInfoId)
+                    //.select();
+                //if (updateError) {
+                  //  console.error("Error updating classification result:", error);
+                   // return;
+                //}
+                //else{
+                  //  console.log("Classification result updated successfully:", updateData);
+                //}
+                //console.log("File upload and classification process completed.");
             }
         }
 
