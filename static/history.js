@@ -92,6 +92,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log ("lowerName:", lowerName);  
 
             for (const key of Object.keys(diseaseDescriptions)) {
+                console.log("Checking if", lowerName, "includes", key.toLowerCase());
                 if (lowerName.includes(key.toLowerCase())) {
                     diseaseNameElem.textContent = "Condition: " + key;
                     dictionaryKey = key;
@@ -115,6 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         textContainer.appendChild(descriptionElem);
 
         //hyperlink to disease info page
+        console.log("dictionaryKey:", dictionaryKey);
         if (item.disease_name != null && dictionaryKey != "Healthy") {
             const infoLink = document.createElement("a");
             infoLink.href = "/diseaseInfo"+diseaseLinks[dictionaryKey];
