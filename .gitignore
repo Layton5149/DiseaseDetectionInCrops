@@ -29,3 +29,5 @@ trainCNN/dataset/
 convert.py
 
 disease_detection_model.h5
+
+convnext_tiny_cassava_model.h5

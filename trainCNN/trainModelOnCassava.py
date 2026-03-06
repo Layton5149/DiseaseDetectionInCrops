@@ -2,8 +2,8 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications import ResNet50
-from tensorflow.keras.applications.resnet50 import preprocess_input
+from tensorflow.keras.applications import ConvNeXtTiny
+from tensorflow.keras.applications.convnext import preprocess_input
 import pandas as pd
 import numpy as np
 import os
@@ -12,32 +12,39 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 import tempfile
 
-print("Starting ResNet50 training on Cassava dataset...")
+print("Starting ConvNeXt-Tiny training on Cassava dataset...")
+
 
 # Paths
-BASE_DIR = os.path.dirname(os.path.abspath(__file__)) + "\dataset/cassava_leaf_images"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) + "\\dataset/cassava_leaf_images"
 csv_path = os.path.join(BASE_DIR, "train.csv")
 image_dir = os.path.join(BASE_DIR, "train_images")
 
 
 # Parameters
+
 img_size = 224
 batch_size = 32
 epochs = 20
 seed = 42
 
-# Load data
-df = pd.read_csv(csv_path)
 
-# Convert labels to string for categorical mode
+# Load CSV
+
+df = pd.read_csv(csv_path)
 df['label'] = df['label'].astype(str)
 
+# Stratified split
 train_df, val_df = train_test_split(
     df,
     test_size=0.2,
     stratify=df['label'],
     random_state=seed
 )
+
+
+# Data Generators
 
 train_datagen = ImageDataGenerator(
     preprocessing_function=preprocess_input,
@@ -74,14 +81,19 @@ validation_generator = val_datagen.flow_from_dataframe(
     shuffle=False
 )
 
+
+# Number of Classes
+
 num_classes = len(train_generator.class_indices)
 
 print("\nClass mapping (label → index):")
 print(train_generator.class_indices)
 print(f"Number of classes: {num_classes}\n")
 
-# Build ResNet50 Model
-base_model = ResNet50(
+
+# Build ConvNeXt-Tiny Model
+
+base_model = ConvNeXtTiny(
     weights='imagenet',
     include_top=False,
     input_shape=(img_size, img_size, 3)
@@ -109,6 +121,7 @@ model.compile(
 
 
 # Train Model
+
 start_train_time = time.time()
 
 history = model.fit(
@@ -120,7 +133,9 @@ history = model.fit(
 end_train_time = time.time()
 total_training_time = end_train_time - start_train_time
 
+
 # Evaluation Metrics
+
 validation_generator.reset()
 predictions = model.predict(validation_generator)
 
@@ -129,6 +144,10 @@ y_true = validation_generator.classes
 
 report = classification_report(y_true, y_pred, output_dict=True)
 conf_matrix = confusion_matrix(y_true, y_pred)
+
+
+# Deployment Metrics
+
 
 # Parameter counts
 total_params = model.count_params()
@@ -140,7 +159,7 @@ model.save(tmp_model_path)
 model_size_mb = os.path.getsize(tmp_model_path) / (1024 * 1024)
 os.remove(tmp_model_path)
 
-# CPU inference time (single image)
+# CPU inference timing
 sample_batch = next(validation_generator)[0][0:1]
 
 start_inf = time.time()
@@ -150,7 +169,9 @@ end_inf = time.time()
 
 avg_inference_time = ((end_inf - start_inf) / 100) * 1000  # ms
 
-# Print All Metrics
+
+# Print Metrics
+
 print("\n================= FINAL METRICS =================")
 
 print(f"Training Time: {total_training_time:.2f} seconds")
@@ -172,7 +193,8 @@ print(conf_matrix)
 
 print("=================================================\n")
 
+
 # Save Final Model
 
-model.save("resnet50_cassava_model.h5")
+model.save("convnext_tiny_cassava_model.h5")
 print("Model saved successfully.")
